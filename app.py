@@ -142,22 +142,23 @@ def train_and_visualize_loss():
           lr_G, latent_dim, data[:100].detach().numpy())
 
 
-st.title('GANs対抗ネットワークのトレニンーグ可視化アプリ')
+st.title('GANs対抗ネットワークトレニンーグ可視化アプリ')
 
 st.markdown(
     '''
-    （別GHアカウントの日本語版です、同じ人のものです。has the copy rights.）
-    モデル: (very simple)
+    （別GHアカウントにもホストしてる、同じく私のものです。）
+    
     ```python
     Gen = nn.Sequential(nn.Linear(in_features=2, out_features=2))
     Disc = nn.Sequential(
         nn.Linear(2, 5), nn.Tanh(), 
         nn.Linear(5, 3), nn.Tanh(), 
         nn.Linear(3, 1)
-        )
+        )　
     ```
     '''
 )
 
 if st.button('トレニンーグ開始'):
     train_and_visualize_loss()
+    st.markdown('トレニンーグ完了。')
