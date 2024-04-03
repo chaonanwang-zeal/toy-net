@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 
 
-def train_and_visualize_loss():
+def train_and_visualize_loss(lr_D, lr_G, num_epochs, latent_dim):
     # create the data
     X = torch.normal(0.0, 1, (1000, 2))
     A = torch.tensor([[1, 2], [-0.1, 0.5]])
@@ -137,17 +137,14 @@ def train_and_visualize_loss():
         print(f'loss_D {loss_D[-1]}, loss_G {loss_G[-1]}, \
             {(metrics[2]*num_epochs) / (tok-tik):.1f} examples/sec')
 
-    lr_D, lr_G, latent_dim, num_epochs = 0.05, 0.005, 2, 30
+    # lr_D, lr_G, latent_dim, num_epochs = 0.05, 0.005, 2, 30
     train(Disc, Gen, dataloader, num_epochs, lr_D,
           lr_G, latent_dim, data[:100].detach().numpy())
 
-
 st.title('GANs対抗ネットワークトレニンーグ可視化アプリ')
-
 st.markdown(
     '''
-    （別GHアカウントにもホストしてる、同じく私のものです。）
-    
+    モデル：
     ```python
     Gen = nn.Sequential(nn.Linear(in_features=2, out_features=2))
     Disc = nn.Sequential(
@@ -158,7 +155,30 @@ st.markdown(
     ```
     '''
 )
+st.subheader('ハイパーパラメータ設定:')
 
-if st.button('トレニンーグ開始'):
-    train_and_visualize_loss()
-    st.markdown('トレニンーグ完了。')
+# 获取用户输入
+lr_D = st.text_input('判定モデルの学習率(lr_D):', '0.05')
+lr_G = st.text_input('生成モデルの学習率(lr_G):', '0.005')
+num_epochs = st.text_input('学習回数(num_epochs):', '30')
+
+# 将输入转换为数值类型
+try:
+    lr_D = float(lr_D)
+    lr_G = float(lr_G)
+    num_epochs = int(num_epochs)
+
+    if st.button('トレニンーグ開始'):
+        train_and_visualize_loss(lr_D=lr_D, lr_G=lr_G,
+                                 num_epochs=num_epochs, latent_dim=2)
+        st.markdown('トレニンーグ完了。')
+        
+except ValueError:
+    st.error('Something goes wrong with your input.')
+
+
+
+
+
+
+
